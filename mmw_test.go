@@ -75,7 +75,7 @@ func TestHandlerWrapper(t *testing.T) {
 	h.Assert(t, v == 1, "value is not 1")
 }
 
-func ExampleHandler() {
+func ExampleMiddleware_Handler() {
 	// create a sink to use
 	inm := metrics.NewInmemSink(10*time.Millisecond, 50*time.Millisecond)
 
