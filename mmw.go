@@ -1,3 +1,4 @@
+// package mmw provides a generic http.Handler middleware for go-metrics.
 package mmw
 
 import (
@@ -14,20 +15,26 @@ type metricsHandler struct {
 	countKey []string
 }
 
+// Middleware is simple wrapper around go-metrics.
 type Middleware struct {
 	sink *metrics.Metrics
 }
 
+// New creates a new Middleware
 func New(sink *metrics.Metrics) *Middleware {
 	return &Middleware{sink: sink}
 }
 
+// HandlerWrapper wraps Handler and returns an http.Handler. Useful for chains of middleware like
+// https://github.com/justinas/alice
 func (mw *Middleware) HandlerWrapper(key ...string) func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		return mw.Handler(h, key...)
 	}
 }
 
+// Handler creates a new metrics handler that implements http.Handler. This wraps
+// a handler
 func (mw *Middleware) Handler(handler http.Handler, key ...string) *metricsHandler {
 	m := &metricsHandler{
 		handler: handler,
@@ -45,7 +52,7 @@ func (mw *Middleware) Handler(handler http.Handler, key ...string) *metricsHandl
 	return m
 }
 
-// ServeHTTP wraps a handler and records timing and increments a timer
+// ServeHTTP wraps a handler and records timing and increments a counter
 func (m *metricsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	m.handler.ServeHTTP(w, r)
