@@ -56,6 +56,6 @@ func (mw *Middleware) Handler(handler http.Handler, key ...string) *metricsHandl
 func (m *metricsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	m.handler.ServeHTTP(w, r)
-	m.mw.sink.AddSample(m.timeKey, float32(time.Since(now).Seconds()))
+	m.mw.sink.AddSample(m.timeKey, float32(time.Since(now).Seconds()*1000))
 	m.mw.sink.IncrCounter(m.countKey, 1)
 }
