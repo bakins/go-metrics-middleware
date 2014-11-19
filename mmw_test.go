@@ -45,6 +45,9 @@ func TestHandler(t *testing.T) {
 	v, ok := s.Get("test.testing.count")
 	h.Assert(t, ok, "key not found")
 	h.Assert(t, v == 1, "value is not 1")
+
+	v, ok = s.Get("test.testing.time")
+	h.Assert(t, ok, "key not found")
 }
 
 func TestHandlerWrapper(t *testing.T) {
@@ -73,6 +76,9 @@ func TestHandlerWrapper(t *testing.T) {
 	v, ok := s.Get("test.testing.count")
 	h.Assert(t, ok, "key not found")
 	h.Assert(t, v == 1, "value is not 1")
+
+	v, ok = s.Get("test.testing.time")
+	h.Assert(t, ok, "key not found")
 }
 
 func ExampleMiddleware_Handler() {
