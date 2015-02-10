@@ -52,6 +52,11 @@ func (mw *Middleware) Handler(handler http.Handler, key ...string) *metricsHandl
 	return m
 }
 
+// HandlerFunc is an adapter that allows "normal" functions to be used as handlers.
+func (mw *Middleware) HandlerFunc(f func(http.ResponseWriter, *http.Request), key ...string) *metricsHandler {
+	return mw.Handler(http.HandlerFunc(f), key...)
+}
+
 // ServeHTTP wraps a handler and records timing and increments a counter
 func (m *metricsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
